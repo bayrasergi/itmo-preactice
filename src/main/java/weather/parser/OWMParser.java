@@ -10,38 +10,37 @@ public class OWMParser implements WeatherParser {
     @Override
     public Weather parseWeather(JsonNode json) {
         Weather weather = new Weather();
-        JsonNode coord = json.get("coord");
-        Coord coordEntity = new Coord(coord.get("lat").asDouble(), coord.get("lon").asDouble());
-        JsonNode wind = json.get("wind");
-        Wind windEntity = null;
-        if (wind != null && !wind.isNull()) {
-            windEntity = new Wind(wind.get("speed").asDouble(), wind.get("deg").asDouble());
+        weather.setLat(getDouble(json, "coord", "lat"));
+        weather.setLon(getDouble(json, "coord", "lon"));
+        JsonNode windNode = get(json, "wind");
+        if (windNode != null) {
+            double speed = getDouble(windNode, "speed");
+            int deg = getInt(windNode, "deg");
+            weather.setWindSpeed(speed >= 0 ? speed : 0);
+            weather.setWindDegree(Math.max(deg, 0));
         }
-        JsonNode rain = json.get("rain");
-        Rain rainEntity = null;
-        if (rain != null && !rain.isNull()) {
-            rainEntity = new Rain(rain.get("1h").asDouble(), rain.get("3h").asDouble());
+        JsonNode rainNode = get(json, "rain");
+        if (rainNode != null) {
+            double rain1h = getDouble(rainNode, "1h");
+            double rain3h = getDouble(rainNode, "3h");
+            weather.setRainVol_1h(rain1h >= 0? rain1h : 0);
+            weather.setRainVol_3h(rain3h >= 0? rain3h : 0);
         }
-        JsonNode snow = json.get("snow");
-        Snow snowEntity = null;
-        if (snow != null && !snow.isNull()) {
-            snowEntity = new Snow(rain.get("1h").asDouble(), rain.get("3h").asDouble());
+        JsonNode snowNode = get(json, "snow");
+        if (snowNode != null) {
+            double snow1h = getDouble(snowNode, "1h");
+            double snow3h = getDouble(snowNode, "3h");
+            weather.setSnowVol_1h(snow1h >= 0? snow1h : 0);
+            weather.setSnowVol_3h(snow3h >= 0? snow3h : 0);
         }
-        JsonNode main = json.get("main");
-        weather.setHumidity(main.get("humidity").asDouble());
-        weather.setTemp(main.get("temp").asDouble());
-        JsonNode weatherInfo = json.get("weather");
-        if (weatherInfo != null && !weatherInfo.isNull()) {
-            JsonNode weatherType = weatherInfo.get(0).get("main");
-            if (weatherType != null && !weatherType.isNull()) {
-                weather.setType(weatherType.asText());
-            }
+        weather.setHumidity(getDouble(json, "main", "humidity"));
+        weather.setTemp(getDouble(json, "main", "temp"));
+        JsonNode weatherInfo = get(json, "weather");
+        if (weatherInfo != null && weatherInfo.isArray()) {
+            JsonNode weatherType = weatherInfo.get(0);
+            weather.setType(getString(weatherType, "main"));
         }
-        weather.setTimestamp(json.get("dt").asLong());
-        weather.setCoord(coordEntity);
-        weather.setWind(windEntity);
-        weather.setRain(rainEntity);
-        weather.setSnow(snowEntity);
+        weather.setTimestamp(getLong(json, "dt"));
         return weather;
     }
 

@@ -1,10 +1,17 @@
 package weather.model;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Value
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Tower {
 
-    private Coord coord;
     private String name;
+    private double lat;
+    private double lon;
 }
