@@ -3,7 +3,7 @@ package weather.service;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import weather.model.SpecialMode;
+import weather.model.SpecialModeName;
 import weather.model.Tower;
 import weather.model.Weather;
 
@@ -15,31 +15,31 @@ public class SpecialModeService {
 
     private WeatherService weatherService;
 
-    public Map<SpecialMode, List<Weather>> getPrediction(Tower tower) {
+    public Map<SpecialModeName, List<Weather>> getPrediction(Tower tower) {
         List<Weather> forecastWeather = weatherService.getForecastWeatherForCoord(tower.getLat(), tower.getLon());
-        Map<SpecialMode, List<Weather>> prediction = new HashMap<>();
+        Map<SpecialModeName, List<Weather>> prediction = new HashMap<>();
         List<Weather> cold = checkCold(forecastWeather);
         List<Weather> strongWind = checkStrongWind(forecastWeather);
         List<Weather> downpour = checkDownpour(forecastWeather);
         List<Weather> snowfall = checkSnowFall(forecastWeather);
         List<Weather> fire = checkFire(forecastWeather);
         if (cold != null && !cold.isEmpty()) {
-            prediction.put(SpecialMode.COLD, cold);
+            prediction.put(SpecialModeName.COLD, cold);
         }
         if (strongWind != null && !strongWind.isEmpty()) {
-            prediction.put(SpecialMode.STRONG_WIND, strongWind);
+            prediction.put(SpecialModeName.STRONG_WIND, strongWind);
         }
         if (snowfall != null && !snowfall.isEmpty()) {
-            prediction.put(SpecialMode.SNOWFALL, snowfall);
+            prediction.put(SpecialModeName.SNOWFALL, snowfall);
         }
         if (downpour != null && !downpour.isEmpty()) {
-            prediction.put(SpecialMode.DOWNPOUR, downpour);
+            prediction.put(SpecialModeName.DOWNPOUR, downpour);
         }
         if (fire != null && !fire.isEmpty()) {
-            prediction.put(SpecialMode.FIRE, fire);
+            prediction.put(SpecialModeName.FIRE, fire);
         }
         if (prediction.isEmpty()) {
-            prediction.put(SpecialMode.NONE, Collections.emptyList());
+            prediction.put(SpecialModeName.NONE, Collections.emptyList());
         }
         return prediction;
     }
@@ -50,7 +50,7 @@ public class SpecialModeService {
         }
         List<Weather> cold = new ArrayList<>();
         for (Weather weather : forecastWeather) {
-            if (weather.getTemp() <= -25) {
+            if (weather.getTemperature() <= -25) {
                 cold.add(weather);
             }
         }
@@ -78,12 +78,12 @@ public class SpecialModeService {
         for (int i = 0; i < forecastWeather.size(); i++) {
             Weather weather = forecastWeather.get(i);
             int snowCount = 0;
-            if (weather.getWindSpeed() >= 15 && weather.getType().equals("Snow")) {
+            if (weather.getWindSpeed() >= 15 && weather.getWeatherType().equals("Snow")) {
                 snowWeather.add(weather);
                 ++snowCount;
                 for (++i; i < forecastWeather.size(); i++) {
                     weather = forecastWeather.get(i);
-                    if (!(weather.getWindSpeed() >= 15) || !weather.getType().equals("Snow")) {
+                    if (!(weather.getWindSpeed() >= 15) || !weather.getWeatherType().equals("Snow")) {
                         if (snowCount < 3) {
                             snowWeather.clear();
                         }
@@ -103,7 +103,7 @@ public class SpecialModeService {
         }
         List<Weather> downpour = new ArrayList<>();
         for (Weather weather : forecastWeather) {
-            if (weather.getType().equalsIgnoreCase("Rain") && weather.getRainVol_3h() >= 3) {
+            if (weather.getWeatherType().equalsIgnoreCase("Rain") && weather.getRainVolume() >= 3) {
                 downpour.add(weather);
             }
         }
@@ -116,7 +116,7 @@ public class SpecialModeService {
         }
         List<Weather> fire = new ArrayList<>();
         for (Weather weather : forecastWeather) {
-            if (weather.getTemp() >= 40) {
+            if (weather.getTemperature() >= 40) {
                 fire.add(weather);
             }
         }

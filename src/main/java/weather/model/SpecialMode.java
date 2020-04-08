@@ -1,39 +1,32 @@
 package weather.model;
 
-public enum SpecialMode {
-    NONE("NONE"),
-    COLD("COLD"),
-    STRONG_WIND("STRONG_WIND"),
-    SNOWFALL("SNOWFALL"),
-    ICE("ICE"),
-    DOWNPOUR("DOWNPOUR"),
-    FLOOD("FLOOD"),
-    FIRE("FIRE");
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    private String name;
+import javax.persistence.*;
+import java.sql.Timestamp;
 
-    SpecialMode(String name) {
-        this.name = name;
-    }
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "SpecialMode")
+public class SpecialMode {
 
-    public static SpecialMode getByName(String modeName) {
-        switch (modeName.toUpperCase()) {
-            case "COLD":
-                return COLD;
-            case "STRONG_WIND":
-                return STRONG_WIND;
-            case "SNOWFALL":
-                return SNOWFALL;
-            case "ICE":
-                return ICE;
-            case "DOWNPOUR":
-                return DOWNPOUR;
-            case "FLOOD":
-                return FLOOD;
-            case "FIRE":
-                return FIRE;
-            default:
-                return NONE;
-        }
-    }
+    @Id
+    @GeneratedValue
+    private long specialModeId;
+
+    @Column(name = "Name")
+    @Enumerated(EnumType.STRING)
+    private SpecialModeName name;
+
+    @Column(name = "DateEnable")
+    private Timestamp dateEnable;
+
+    @Column(name = "DateDisable")
+    private Timestamp dateDisable;
 }

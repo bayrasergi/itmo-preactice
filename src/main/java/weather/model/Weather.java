@@ -2,6 +2,7 @@ package weather.model;
 
 import lombok.*;
 
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -10,47 +11,38 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "Weather")
 public class Weather {
 
-    private double lat;
-    private double lon;
-    private double temp;
-    private double humidity;
-    private String type;
-    private long timestamp;
+    @Id
+    @GeneratedValue
+    private long weatherId;
 
-    private int windDegree;
+    @Column(name = "Lat")
+    private double lat;
+
+    @Column(name = "Lon")
+    private double lon;
+
+    @Column(name = "Temperature")
+    private double temperature;
+
+    @Column(name = "WeatherType")
+    private String weatherType;
+
+    @Column(name = "Date")
+    private Timestamp date;
+
+    @Column(name = "WindDirection")
+    private int windDirection;
+
+    @Column(name = "WindSpeed")
     private double windSpeed;
 
-    private double rainVol_1h;
-    private double rainVol_3h;
+    @Column(name = "RainVolume")
+    private double rainVolume;
 
-    private double snowVol_1h;
-    private double snowVol_3h;
-
-    public LocalDateTime getTime() {
-        if (timestamp <= 0){
-            return null;
-        }
-        return Timestamp.from(Instant.ofEpochSecond(this.timestamp)).toLocalDateTime();
-    }
-
-    @Override
-    public String toString() {
-        return "Weather{" +
-                "lat=" + lat +
-                ", lon=" + lon +
-                ", temp=" + temp +
-                ", humidity=" + humidity +
-                ", type='" + type + '\'' +
-                ", timestamp=" + timestamp +
-                ", time=" + getTime() +
-                ", windDegree=" + windDegree +
-                ", windSpeed=" + windSpeed +
-                ", rainVol_1h=" + rainVol_1h +
-                ", rainVol_3h=" + rainVol_3h +
-                ", snowVol_1h=" + snowVol_1h +
-                ", snowVol_3h=" + snowVol_3h +
-                '}';
-    }
+    @Column(name = "SnowVolume")
+    private double snowVolume;
 }

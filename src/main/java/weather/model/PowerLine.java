@@ -13,22 +13,21 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Tower")
-public class Tower {
+@Table(name = "PowerLine")
+public class PowerLine {
 
     @Id
     @GeneratedValue
-    private long towerId;
+    private long powerLineId;
 
     @Column(name = "Name")
     private String name;
 
-    @Column(name = "Lat")
-    private double lat;
-
-    @Column(name = "Lon")
-    private double lon;
-
-    @ManyToMany(mappedBy = "towers")
-    private List<PowerLine> powerLines;
+    @ManyToMany
+    @JoinTable(
+            name = "PowerLineTower",
+            joinColumns = {@JoinColumn(name = "PowerLineID")},
+            inverseJoinColumns = {@JoinColumn(name = "TowerID")}
+    )
+    private List<Tower> towers;
 }

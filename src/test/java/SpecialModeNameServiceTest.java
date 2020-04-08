@@ -4,7 +4,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import weather.Application;
-import weather.model.SpecialMode;
+import weather.model.SpecialModeName;
 import weather.model.Tower;
 import weather.model.Weather;
 import weather.service.SpecialModeService;
@@ -12,8 +12,6 @@ import weather.service.WeatherService;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +19,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SpecialModeServiceTest {
+public class SpecialModeNameServiceTest {
     SpecialModeService modeService;
 
     @Mock
@@ -41,10 +39,10 @@ public class SpecialModeServiceTest {
             weathers.add(getWeather("Cloud", t, 5 + random.nextInt(5), 1 + random.nextInt(3), 0, 0));
         });
         Mockito.when(weatherService.getForecastWeatherForCoord(1.0, 1.0)).thenReturn(weathers);
-        Map<SpecialMode, List<Weather>> test = modeService.getPrediction(new Tower("test", 1.0, 1.0));
+        Map<SpecialModeName, List<Weather>> test = modeService.getPrediction(new Tower("test", 1.0, 1.0));
         Application.printResult(test);
         assertEquals(test.size(), 1);
-        assertNotNull(test.get(SpecialMode.NONE));
+        assertNotNull(test.get(SpecialModeName.NONE));
     }
 
     @Test
@@ -55,10 +53,10 @@ public class SpecialModeServiceTest {
             weathers.add(getWeather("Cloud", t, 5 + random.nextInt(5), 25 + random.nextInt(3), 0, 0));
         });
         Mockito.when(weatherService.getForecastWeatherForCoord(1.0, 1.0)).thenReturn(weathers);
-        Map<SpecialMode, List<Weather>> test = modeService.getPrediction(new Tower("test", 1.0, 1.0));
+        Map<SpecialModeName, List<Weather>> test = modeService.getPrediction(new Tower("test", 1.0, 1.0));
         Application.printResult(test);
         assertEquals(test.size(), 1);
-        List<Weather> wind = test.get(SpecialMode.STRONG_WIND);
+        List<Weather> wind = test.get(SpecialModeName.STRONG_WIND);
         assertNotNull(wind);
         wind.forEach(w -> {
             assertTrue(w.getWindSpeed() >= 25);
@@ -73,10 +71,10 @@ public class SpecialModeServiceTest {
             weathers.add(getWeather("Snow", t, -10 + random.nextInt(5), 15 + random.nextInt(3), 0, 2 + random.nextDouble()));
         });
         Mockito.when(weatherService.getForecastWeatherForCoord(1.0, 1.0)).thenReturn(weathers);
-        Map<SpecialMode, List<Weather>> test = modeService.getPrediction(new Tower("test", 1.0, 1.0));
+        Map<SpecialModeName, List<Weather>> test = modeService.getPrediction(new Tower("test", 1.0, 1.0));
         Application.printResult(test);
         assertEquals(test.size(), 1);
-        List<Weather> snowfall = test.get(SpecialMode.SNOWFALL);
+        List<Weather> snowfall = test.get(SpecialModeName.SNOWFALL);
         assertNotNull(snowfall);
         snowfall.forEach(w -> {
             assertTrue(w.getWindSpeed() >= 15);
@@ -91,10 +89,10 @@ public class SpecialModeServiceTest {
             weathers.add(getWeather("Rain", t, 10 + random.nextInt(5), 8 + random.nextInt(3), 3 + random.nextDouble(), 0));
         });
         Mockito.when(weatherService.getForecastWeatherForCoord(1.0, 1.0)).thenReturn(weathers);
-        Map<SpecialMode, List<Weather>> test = modeService.getPrediction(new Tower("test", 1.0, 1.0));
+        Map<SpecialModeName, List<Weather>> test = modeService.getPrediction(new Tower("test", 1.0, 1.0));
         Application.printResult(test);
         assertEquals(test.size(), 1);
-        List<Weather> downpour = test.get(SpecialMode.DOWNPOUR);
+        List<Weather> downpour = test.get(SpecialModeName.DOWNPOUR);
         assertNotNull(downpour);
         downpour.forEach(w -> {
             assertTrue(w.getRainVol_3h() >= 3);
@@ -109,10 +107,10 @@ public class SpecialModeServiceTest {
             weathers.add(getWeather("Cloud", t, 40 + random.nextInt(5), 8 + random.nextInt(3), 0, 0));
         });
         Mockito.when(weatherService.getForecastWeatherForCoord(1.0, 1.0)).thenReturn(weathers);
-        Map<SpecialMode, List<Weather>> test = modeService.getPrediction(new Tower("test", 1.0, 1.0));
+        Map<SpecialModeName, List<Weather>> test = modeService.getPrediction(new Tower("test", 1.0, 1.0));
         Application.printResult(test);
         assertEquals(test.size(), 1);
-        List<Weather> fire = test.get(SpecialMode.FIRE);
+        List<Weather> fire = test.get(SpecialModeName.FIRE);
         assertNotNull(fire);
         fire.forEach(w -> {
             assertTrue(w.getTemp() >= 40);
