@@ -19,8 +19,11 @@ public class Shutdown {
     @GeneratedValue
     private long shutdownId;
 
-    @JoinColumn(name = "")
+    @ManyToOne
+    @JoinColumn(name = "WeatherID")
     private Weather weather;
 
+    @ManyToOne
+    @JoinColumn(name = "PowerLineID")
     private PowerLine powerLine;
 }

@@ -1,5 +1,5 @@
 CREATE TABLE "Weather" (
-    "WeatherID" bigint   NOT NULL,
+    "WeatherID" varchar   NOT NULL,
     "Lat" double precision   NOT NULL,
     "Lon" double precision   NOT NULL,
     "WindSpeed" double precision   NOT NULL,
