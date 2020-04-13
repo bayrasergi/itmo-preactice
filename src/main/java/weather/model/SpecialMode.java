@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 public class SpecialMode {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long specialModeId;
 
     @Column(name = "Name")

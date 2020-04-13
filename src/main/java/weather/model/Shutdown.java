@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class Shutdown {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long shutdownId;
 
     @ManyToOne

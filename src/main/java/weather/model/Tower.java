@@ -17,7 +17,7 @@ import java.util.List;
 public class Tower {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long towerId;
 
     @Column(name = "Name")

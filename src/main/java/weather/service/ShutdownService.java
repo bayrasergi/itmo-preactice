@@ -10,6 +10,7 @@ import weather.respository.PowerLineRepository;
 import weather.respository.ShutdownRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ShutdownService {
@@ -27,9 +28,9 @@ public class ShutdownService {
     }
 
     public Shutdown shutdownOnPowerLine(PowerLine powerLine) {
-        var shutdown = new Shutdown();
-        var powerLineOptional = powerLineRepository.findById(powerLine.getPowerLineId());
-        if (powerLineOptional.isEmpty()) {
+        Shutdown shutdown = new Shutdown();
+        Optional<PowerLine> powerLineOptional = powerLineRepository.findById(powerLine.getPowerLineId());
+        if (!powerLineOptional.isPresent()) {
             return null;
         }
         powerLine = powerLineOptional.get();

@@ -17,7 +17,7 @@ import java.util.List;
 public class PowerLine {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long powerLineId;
 
     @Column(name = "Name")

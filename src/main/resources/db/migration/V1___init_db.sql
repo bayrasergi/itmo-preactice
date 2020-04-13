@@ -1,5 +1,5 @@
 CREATE TABLE "Weather" (
-    "WeatherID" varchar   NOT NULL,
+    "WeatherID" bigserial,
     "Lat" double precision   NOT NULL,
     "Lon" double precision   NOT NULL,
     "WindSpeed" double precision   NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE "Weather" (
 );
 
 CREATE TABLE "SpecialMode" (
-    "SpecialModeID" bigint   NOT NULL,
+    "SpecialModeID" bigserial,
     "Name" varchar(20)   NOT NULL,
     "DateEnable" timestamp,
     "DateDisable" timestamp,
@@ -25,7 +25,7 @@ CREATE TABLE "SpecialMode" (
 );
 
 CREATE TABLE "Tower" (
-    "TowerID" bigint   NOT NULL,
+    "TowerID" bigserial,
     "Name" varchar(100)   NOT NULL,
     "Lon" double precision   NOT NULL,
     "Lat" double precision   NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE "Tower" (
 );
 
 CREATE TABLE "PowerLine" (
-    "PowerLineID" bigint   NOT NULL,
+    "PowerLineID" bigserial,
     "Name" varchar(100)   NOT NULL,
     CONSTRAINT "pk_PowerLine" PRIMARY KEY (
         "PowerLineID"
@@ -43,7 +43,7 @@ CREATE TABLE "PowerLine" (
 );
 
 CREATE TABLE "PowerLineTower" (
-    "PowerLineTowerID" bigint   NOT NULL,
+    "PowerLineTowerID" bigserial,
     "PowerLineID" bigint   NOT NULL,
     "TowerID" bigint   NOT NULL,
     CONSTRAINT "pk_PowerLineTower" PRIMARY KEY (
@@ -52,7 +52,7 @@ CREATE TABLE "PowerLineTower" (
 );
 
 CREATE TABLE "Shutdown" (
-    "ShutdownID" bigint   NOT NULL,
+    "ShutdownID" bigserial,
     "WeatherID" bigint   NOT NULL,
     "PowerLineID" bigint   NOT NULL,
     CONSTRAINT "pk_Shutdown" PRIMARY KEY (

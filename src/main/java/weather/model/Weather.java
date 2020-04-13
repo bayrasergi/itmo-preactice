@@ -17,7 +17,7 @@ import java.sql.Timestamp;
 public class Weather {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long weatherId;
 
     @Column(name = "Lat")
